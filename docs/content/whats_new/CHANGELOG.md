@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file. See [conven
 
 ### ⚙️ Miscellaneous
 
+- **(outrider)** drop schedule + cap agent-timeout 1800 - ([5d2531c](https://github.com/nicrie/xeofs/commit/5d2531cefad9032aff2639c4dfaa33516a41b856)) - smellslikeml
 - drop Python 3.10 and add Python 3.13 support (#260) - ([cd1ff47](https://github.com/nicrie/xeofs/commit/cd1ff475e75f26f6b6cc57533d595ab1185bf6d0)) - Niclas Rieger
 
 ---
