@@ -19,8 +19,8 @@ class EOF(BaseModelSingleSet):
 
     Parameters
     ----------
-    n_modes: int, default=10
-        Number of modes to calculate.
+    n_modes: int | float | str, default=10
+        Number of modes to calculate. If float, it represents the fraction of variance to keep. If `n_modes="all"`, keep all components.
     center: bool, default=True
         Whether to center the input data.
     standardize: bool, default=False
@@ -257,8 +257,8 @@ class ComplexEOF(EOF):
 
     Parameters
     ----------
-    n_modes : int
-        Number of modes to calculate.
+    n_modes : int | float | str
+        Number of modes to calculate. If float, it represents the fraction of variance to keep. If `n_modes="all"`, keep all components.
     center: bool, default=True
         Whether to center the input data.
     standardize : bool
@@ -462,8 +462,8 @@ class HilbertEOF(ComplexEOF):
 
     Parameters
     ----------
-    n_modes : int
-        Number of modes to calculate.
+    n_modes : int | float | str
+        Number of modes to calculate. If float, it represents the fraction of variance to keep. If `n_modes="all"`, keep all components.
     padding : str, optional
         Specifies the method used for padding the data prior to applying the Hilbert
         transform. This can help to mitigate the effect of spectral leakage.

@@ -366,6 +366,18 @@ def test_decompose_via_variance_threshold(mock_data_array, target_variance, solv
     assert s.mode.size < min(mock_data_array.shape)
 
 
+@pytest.mark.parametrize("solver", ["full", "randomized"])
+def test_decompose_all_modes_returns_full_rank(mock_data_array, solver):
+    """Test that n_modes="all" returns the full-rank decomposition."""
+    rank = min(mock_data_array.shape)
+    decomposer = Decomposer(n_modes="all", solver=solver, random_state=42)
+    decomposer.fit(mock_data_array)
+
+    assert decomposer.s_.mode.size == rank
+    assert decomposer.U_.shape[1] == rank
+    assert decomposer.V_.shape[1] == rank
+
+
 def test_raise_warning_for_low_init_rank_reduction(mock_data_array):
     target_variance = 0.5
     init_rank_reduction = 0.1

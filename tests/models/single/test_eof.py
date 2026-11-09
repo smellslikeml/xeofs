@@ -46,6 +46,16 @@ def test_fit(dim, mock_data_array):
     assert hasattr(eof, "data")
 
 
+def test_fit_all_modes_returns_full_rank(mock_data_array):
+    """Tests that n_modes="all" yields all modes up to the rank of the data"""
+    eof = EOF(n_modes="all")
+    eof.fit(mock_data_array, dim="time")
+
+    n_samples = mock_data_array.sizes["time"]
+    n_features = mock_data_array.sizes["lat"] * mock_data_array.sizes["lon"]
+    assert eof.singular_values().mode.size == min(n_samples, n_features)
+
+
 @pytest.mark.parametrize(
     "dim",
     [

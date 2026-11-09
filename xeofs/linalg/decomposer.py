@@ -21,8 +21,8 @@ class Decomposer:
 
     Parameters
     ----------
-    n_modes : int | float
-        Number of components to be computed. If float, it represents the fraction of variance to keep.
+    n_modes : int | float | str
+        Number of components to be computed. If float, it represents the fraction of variance to keep. If `n_modes="all"`, keep all components.
     init_rank_reduction : float, default=0.0
         Used only when `n_modes` is given as a float. Specifiy the initial target rank to be computed by randomized SVD before truncating the solution to the desired fraction of explained variance. Must be in the half open interval (0, 1]. Lower values will speed up the computation. If the rank is too low and the fraction of explained variance is not reached, a warning will be raised.
     flip_signs : bool, default=True
@@ -55,7 +55,7 @@ class Decomposer:
 
     def __init__(
         self,
-        n_modes: float,
+        n_modes: float | str,
         init_rank_reduction: float = 0.3,
         flip_signs: bool = True,
         compute: bool = True,
@@ -67,7 +67,8 @@ class Decomposer:
         if solver_kwargs is None:
             solver_kwargs = {}
         sanity_check_n_modes(n_modes)
-        self.is_based_on_variance = not isinstance(n_modes, int)
+        self.is_based_on_variance = isinstance(n_modes, float)
+        self.is_full_rank = isinstance(n_modes, str)
 
         if self.is_based_on_variance and not (0 < init_rank_reduction <= 1.0):
             raise ValueError(
@@ -103,8 +104,9 @@ class Decomposer:
                     f"`init_rank_reduction={self.init_rank_reduction}` is too low resulting in zero components. One component will be computed instead."
                 )
                 self.n_modes_precompute = 1
+        elif self.is_full_rank:
+            self.n_modes_precompute = rank
 
-        # TODO(nicrie): perhaps we can just set n_modes to rank if it is larger than rank (possible solution for #158)
         if self.n_modes_precompute > rank:
             raise ValueError(
                 f"n_modes must be less than or equal to the rank of the dataset (rank = {rank})."
